@@ -1,0 +1,279 @@
+name: Docker Build
+
+# -----------------------------------------------------------------------------------
+# Read more about how to use it here: docker-build-README.md
+#
+
+on:
+  workflow_call:
+    inputs:
+      # ---------- image params ----------
+      image-name:
+        required: true
+        type: string
+        description: >
+          Full name of the image with registry
+          (i.e. <REGISTRY>:<PORT>/<PATH-TO-IMAGE>/<IMAGE>:<VERSION-AS-A-TAG>)
+      # ---------- build params ----------
+      artifact-build-name:
+        description: >
+          Artifact name to be built
+        type: string
+        required: true
+      artifact-build-number:
+        description: >
+          Semantic version number for the artifact (ex: 0.0.1)
+        type: string
+        required: true
+      # OPTIONAL: suffix to be applied to the build number, note that the suffix includes a hyphen.
+      artifact-build-number-suffix:
+        description: >
+          OPTIONAL parameter, suffix added to the end of the build number to uniquely identify the build. (default: -docker, <BUILD-NUMBER>-docker)
+        type: string
+        required: false
+        default: "-docker"
+      # ---------- docker params ----------
+      docker-remote-registry:
+        required: false
+        type: string
+        default: "docker.io"
+        description: >
+          Name of the remote docker registry where the image will be published
+          (default: docker.io)
+      docker-repository:
+        required: false
+        type: string
+        default: "docker-local"
+        description: >
+          Name of the docker repository to upload the image
+          (default: docker-local)
+      # ---------- OPTIONAL: docker build params ----------
+      docker-context:
+        type: string
+        description: >
+          Relative path to directory in the project where the Docker build
+          context can be found.
+          (default: "./")
+        required: false
+        default: "./"
+      dockerfile:
+        type: string
+        description: >
+          Relative path to Dockerfile in the project where the Dockerfile
+          can be found.
+          (default: "./Dockerfile")
+        required: false
+        default: "./Dockerfile"
+      # ---------- OPTIONAL: Custom Docker build args ----------
+      custom-build-args:
+        required: false
+        type: string
+        description: >
+          YAML formatted string of key value pairs to be injected to the docker build command.
+      staged-artifact-name:
+        description: >
+          Name of the required pre-staged GitHub artifacts
+        required: false
+        type: string
+      staged-artifact-download-destination:
+        description: >
+          Path to download the staged artifact to (i.e. /path/to/staged-artifact/ default: '.')
+        required: false
+        type: string
+        default: "."
+#      # ---------- OPTIONAL: Enable GH Code Scans ----------
+#      enable-github-codeql-file-upload:
+#        description: >
+#          Flag used to see if the build should try and upload the sarif file from a prisma scan to enable GH codeql. (default: false)
+#        required: false
+#        default: false
+#        type: boolean
+    outputs:
+      artifact-full-build-number:
+        description: >
+          Unique identifier of the build event that publishes the wheel to the registry (i.e. 0.0.1-docker)
+        value: ${{ jobs.set-full-build-number.outputs.artifact-full-build-number }}
+    secrets:
+      internal-actions-checkout-token:
+        required: true
+        description: >
+          GH Token used to checkout internal actions
+      registry-username:
+        required: true
+        description: >
+          Username for registry login
+      registry-password:
+        required: true
+        description: >
+          Password for registry login
+
+
+jobs:
+  self-hosted-runner-cleanup:
+    # TODO: set runner
+    runs-on: self-hosted
+    steps:
+      - name: Cleanup self hosted runner's workspace
+        run: |
+          echo "[*] Cleaning up previous run"
+          rm -rf "${{ github.workspace }}"
+          docker system prune --all -f
+  # ---------------------------------------------------------------------------------
+  # Generate a build number with a unique suffix for the build (in Registry)
+  #
+  # This job alleviates possible naming/number collisions in scenarios where
+  # there are multiple artifacts/builds with the same build name (in the registry)
+  #
+  set-full-build-number:
+    name: Set Build Number
+    needs:
+      - self-hosted-runner-cleanup
+    runs-on: self-hosted
+    outputs:
+      artifact-full-build-number: ${{ steps.set-full-build-number-with-suffix.outputs.artifact-build-number-with-suffix }}
+    steps:
+      - uses: actions/checkout@v2
+
+      # Please note:
+      # The artifact suffix includes the hyphen '-', so the full build number will be formatted to be <build-number>-suffix
+      - name: Set Build Number w/ Suffix
+        id: set-full-build-number-with-suffix
+        run: |
+          echo "::set-output name=artifact-build-number-with-suffix::${{ inputs.artifact-build-number }}${{ inputs.artifact-build-number-suffix }}"
+
+  prepare-build-args:
+    #
+    # This job uses the PyYaml Python package to parse YAML formatted Docker build args
+    # provided by the user. These are then process from a Python dictionary to a string
+    # of Docker build arg flags to be used in the 'docker build' command in the
+    # following job.
+    #
+    # Some of the workflow inputs are passed as build args automatically.
+    #   - artifact-build-number ==> BUILD_NUMBER
+    #
+    name: Prepare Build Args
+    # TODO: set runner
+    runs-on: self-hosted
+    # TODO: set image for gha job
+    container:
+      image: registry:port/image:tag
+    outputs:
+      user-build-args:  ${{ steps.user-provided-build-args.outputs.user-build-args }}
+      user-raw-build-args: ${{ steps.user-provided-build-args.outputs.user-raw-build-args }}
+    steps:
+      - name: Ensure PyYaml Installed
+        run: pip install PyYaml
+
+      ###
+      # NEED TO USE NEWLINE URL ESCAPING / ENCODING
+      # This is to get the output properly formatted YAML syntax so that the Docker GH action can read the values correctly
+      # per, https://github.community/t/set-output-truncates-multiline-strings/16852/5
+      - name: Prepare User-Provided Build Args
+        id: user-provided-build-args
+        shell: python
+        run: |
+          import yaml
+
+          build_args_input = """
+          BUILD_NUMBER: ${{ inputs.artifact-build-number }}
+          ${{ inputs.custom-build-args }}
+          """
+
+          if build_args_input is not None:
+            build_args_kvp_dict = yaml.load(build_args_input, yaml.SafeLoader)
+
+            build_args = []
+            raw_build_args = []
+            for k,v in build_args_kvp_dict.items():
+              build_args.append(f"--build-arg \"{k}={v}\"")
+              raw_build_args.append(f"\"{k}={v}\"")
+
+            print(f"::set-output name=user-build-args::{' '.join(build_args)}")
+            print(f"::set-output name=user-raw-build-args::{'%0A'.join(raw_build_args)}")
+          else:
+            print("No custom build args detected. Skipping prepare step.")
+
+
+
+  docker-build:
+    name: Build and Publish Docker Image
+    needs: [prepare-build-args, set-full-build-number]
+    # TODO: set runner
+    runs-on: self-hosted
+    env:
+      USER_BUILD_ARGS: ${{ needs.prepare-build-args.outputs.user-build-args }}
+      USER_RAW_BUILD_ARGS: ${{ needs.prepare-build-args.outputs.user-raw-build-args }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download Staged Artifacts
+        if: ${{ inputs.staged-artifact-name }}
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ inputs.staged-artifact-name }}
+          path: ${{ inputs.staged-artifact-download-destination }}
+
+      - name: Docker Metadata
+        id: docker-metadata
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ inputs.image-name }}
+
+      - name: Docker Login
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ inputs.docker-remote-registry }}
+          username: ${{ secrets.registry-username }}
+          password: ${{ secrets.registry-password }}
+
+      # Use the official Docker Build (and Push) action instead of a raw docker build command --
+      # This was done to handle passing in GH secrets as Docker secrets to enable authx in the containers
+      - name: Docker Build
+        uses: docker/build-push-action@v2
+        with:
+          context: ${{ inputs.docker-context }}
+          file: ${{ inputs.dockerfile }}
+          push: false
+          build-args: |
+            ${{ env.USER_RAW_BUILD_ARGS }}
+            ${{ steps.read-metadata-file.outputs.raw_docker_build_args }}
+          tags: |
+            ${{ inputs.image-name }}
+          labels: |
+            ${{ steps.read-metadata-file.outputs.raw_docker_labels }}
+            ${{ steps.docker-metadata.outputs.labels }}
+          secrets: |
+            "REGISTRY_USERNAME=${{ secrets.registry-username }}"
+            "REGISTRY_PASSWORD=${{ secrets.registry-password }}"
+
+      # TODO: update this step with proper push
+      - name: Docker Push
+        run: |
+          docker push \
+            $ARGS_HERE
+
+      - name: Registry Build Info Summary
+        run: |
+          echo '
+          # Docker Registry Build Info
+          [`Link to published build`](${{ inputs.docker-remote-registry }}/ui/builds/${{ inputs.artifact-build-name }}/${{ needs.set-full-build-number.outputs.artifact-full-build-number }}) in Registry for build: `${{ inputs.artifact-build-name }}`: `${{ needs.set-full-build-number.outputs.artifact-full-build-number }}`
+          ' >> $GITHUB_STEP_SUMMARY
+
+  docker-build-job-summary:
+    name: Docker Build Job Summary
+    needs: [docker-build]
+    # TODO: set runner
+    runs-on: self-hosted
+    steps:
+      - run: |
+          echo '
+          # The Published Docker Image
+          
+          The image can be found in `${{ inputs.docker-repository }}` in Registry at [${{ inputs.docker-remote-registry }}](${{ inputs.docker-remote-registry }})
+          
+          To pull the image locally,
+          ```bash
+          docker pull ${{ inputs.image-name }}
+          ```
+          ' >> $GITHUB_STEP_SUMMARY
+          
