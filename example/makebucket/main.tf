@@ -20,6 +20,7 @@ terraform {
     bucket = "tfstate-dd-kb"                       # Defined in terraform/apps/tfinit as a default
     key    = "statefiles/us-east-2/example-bucket" # make unique 
     region = "us-east-2"                           # Probably not needed but add anyway
+	dynamodb_table = "tfstate-dd-kb-table"
   }
 }
 
