@@ -17,8 +17,8 @@ jobs:
         with:
           download-init-package: true
 
-      - name: Create the package
-        run: zarf package create --confirm
+      # - name: Create the package
+      #   run: zarf package create --confirm
 
       - name: Create a k3d cluster
         run: |
@@ -28,8 +28,8 @@ jobs:
       - name: Initialize the cluster
         run: zarf init --components=git-server --confirm
 
-      - name: Deploy the package
-        run: zarf deploy --confirm
+      # - name: Deploy the package
+      #   run: zarf deploy --confirm
 
       - name: View the deployed package
         run: zarf package list
