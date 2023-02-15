@@ -28,3 +28,4 @@ components:
   images:
     - summerwind/actions-runner-controller:v0.27.0
     - quay.io/brancz/kube-rbac-proxy:v0.13.1
+
