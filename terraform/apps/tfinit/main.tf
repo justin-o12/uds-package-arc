@@ -8,14 +8,14 @@ terraform {
 }
 
 provider "aws" {
-  region = vars.aws_region
+  region = var.aws_region
 }
 
 
 #### <BUCKET> ####
 # S3 Bucket for the State File
 
-resource "aws_s3_bucket" "b" {
+resource "aws_s3_bucket" "tfbucket" {
   bucket = var.bucket_name 
 
   tags = tomap({
@@ -25,8 +25,8 @@ resource "aws_s3_bucket" "b" {
   })
 }
 
-resource "aws_s3_bucket_acl" "example" {
-  bucket = aws_s3_bucket.b.id
+resource "aws_s3_bucket_acl" "tfbucket_acl" {
+  bucket = aws_s3_bucket.tfbucket.id
   acl    = "private"
 }
 ### </BUCKET> ####

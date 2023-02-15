@@ -8,5 +8,5 @@ variable "aws_region" {
 variable "bucket_name" {
   type        = string
   description = "Name of the Terraform Bucket"
-  default     = "tfstate"
+  default     = "tfstate-dd-kb"
 }
