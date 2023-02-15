@@ -16,7 +16,7 @@ provider "aws" {
 # S3 Bucket for the State File
 
 resource "aws_s3_bucket" "tfbucket" {
-  bucket = var.bucket_name 
+  bucket = var.bucket_name
 
   tags = tomap({
     TEAM = "dashdays-kibbles-and-bits",
@@ -35,7 +35,7 @@ resource "aws_s3_bucket_acl" "tfbucket_acl" {
 #### <DynamoDB Table> ####
 # Dynamodb table for the lock file 
 resource "aws_dynamodb_table" "action_locktable" {
-  name           = "${var.bucket_name}-table" 
+  name           = "${var.bucket_name}-table"
   billing_mode   = "PAY_PER_REQUEST"
   hash_key       = "LockID"
   stream_enabled = false
