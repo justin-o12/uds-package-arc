@@ -16,8 +16,7 @@ jobs:
       # Setup Zarf
       - name: Setup Zarf
         uses: defenseunicorns/setup-zarf@main # https://github.com/defenseunicorns/setup-zarf
-        with:
-          version: v0.22.1 # Optional, defaults to https://github.com/defenseunicorns/zarf/releases/latest
+        with:         
           download-init-package: true # Required, defaults to false
       # Cloning example packages from main Zarf repo
       - name: Clone Examples
