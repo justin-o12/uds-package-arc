@@ -26,7 +26,7 @@ jobs:
           k3d cluster delete && k3d cluster create
 
       - name: Initialize the cluster
-        run: zarf init --confirm
+        run: zarf init --components=git-server --confirm
 
       - name: Deploy the package
         run: zarf deploy --confirm
