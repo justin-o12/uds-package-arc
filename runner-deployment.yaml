@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    zarf.dev/agent: ignore
+  name: actions-runner
+---
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: RunnerDeployment
+metadata:
+  name: example-runnerdeploy
+  namespace: actions-runner
+spec:
+  replicas: 1
+  template:
+    spec:
+      repository: defenseunicorns/kibbles-AND-bits
