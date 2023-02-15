@@ -1,0 +1,30 @@
+kind: ZarfPackageConfig
+metadata:
+  name: actions-runner-controller-full
+  description: "Deploys a helm chart with custom release name"
+components:
+- name: cert-manager
+  required: true
+  manifests:
+  - name: cert-manager
+    namespace: cert-manager
+    files:
+      - cert-manager.yaml
+  images:
+    - quay.io/jetstack/cert-manager-cainjector:v1.8.2
+    - quay.io/jetstack/cert-manager-controller:v1.8.2
+    - quay.io/jetstack/cert-manager-ctl:v1.11.0
+    - quay.io/jetstack/cert-manager-webhook:v1.8.2
+- name: actions-runner-controller
+  required: true
+  charts:      
+    - name: actions-runner-controller
+      releaseName: arc
+      url: https://actions-runner-controller.github.io/actions-runner-controller
+      version: 0.22.0
+      namespace: actions-runner-system    
+      valuesFiles:
+        - "values.yaml"
+  images:
+    - summerwind/actions-runner-controller:v0.27.0
+    - quay.io/brancz/kube-rbac-proxy:v0.13.1
