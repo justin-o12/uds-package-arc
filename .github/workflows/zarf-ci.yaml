@@ -22,6 +22,10 @@ jobs:
 
       - name: Create a k3d cluster
         run: |
+          mkdir -p ~/bin
+          export K3D_INSTALL_DIR=~/bin
+          export PATH=$PATH:$HOME/bin
+
           curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
           k3d cluster delete && k3d cluster create
 

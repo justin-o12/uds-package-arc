@@ -15,3 +15,7 @@ spec:
   template:
     spec:
       repository: defenseunicorns/kibbles-AND-bits
+
+      # https://github.com/actions/actions-runner-controller/blob/master/docs/deploying-alternative-runners.md
+      image: summerwind/actions-runner-dind-rootless
+      dockerdWithinRunnerContainer: true
