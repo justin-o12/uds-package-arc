@@ -27,9 +27,13 @@ components:
       releaseName: arc
       url: https://actions-runner-controller.github.io/actions-runner-controller
       version: 0.22.0
-      namespace: actions-runner-system    
+      namespace: actions-runner-system
       valuesFiles:
         - "values.yaml"
+  manifests:
+    - name: actions-runner-controller-config
+      files:
+      - runner-deployment.yaml
   images:
     - summerwind/actions-runner-controller:v0.27.0
     - quay.io/brancz/kube-rbac-proxy:v0.13.1
