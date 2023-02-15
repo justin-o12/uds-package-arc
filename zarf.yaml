@@ -1,7 +1,12 @@
 kind: ZarfPackageConfig
 metadata:
   name: actions-runner-controller-full
-  description: "Deploys a helm chart with custom release name"
+  description: "Deploys actions/actions-runner-controller self hosted GitHub Actions"
+
+variables:
+  - name: GITHUB_TOKEN
+    prompt: true
+
 components:
 - name: cert-manager
   required: true
