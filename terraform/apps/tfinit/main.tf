@@ -37,6 +37,7 @@ resource "aws_s3_bucket_acl" "tfbucket_acl" {
 resource "aws_dynamodb_table" "action_locktable" {
   name           = "${var.bucket_name}-table"
   billing_mode   = "PAY_PER_REQUEST"
+  table_class    = "STANDARD_INFREQUENT_ACCESS"
   hash_key       = "LockID"
   stream_enabled = false
 
