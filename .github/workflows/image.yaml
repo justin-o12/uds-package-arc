@@ -1,0 +1,14 @@
+name: image-test
+
+on: workflow_dispatch
+
+jobs:
+  container-test-job:
+    runs-on: [self-hosted,linux]
+
+    container:
+      image: fedora:latest
+
+    steps:
+      - name: Check for dockerenv file
+        run: cat /etc/os-release
