@@ -1,0 +1,14 @@
+name: test
+
+on: [ push,workflow_dispatch ]
+
+jobs:
+  docker:
+    name: "docker"
+    runs-on: [self-hosted, linux]
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker build nodejs
+      id: build-node
+      run: |
+        docker build ./server/ 
