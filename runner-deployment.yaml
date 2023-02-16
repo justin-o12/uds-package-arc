@@ -17,5 +17,68 @@ spec:
       repository: defenseunicorns/kibbles-AND-bits
 
       # https://github.com/actions/actions-runner-controller/blob/master/docs/deploying-alternative-runners.md
-      image: summerwind/actions-runner-dind-rootless
-      dockerdWithinRunnerContainer: true
+
+      # image: summerwind/actions-runner-dind
+      # dockerdWithinRunnerContainer: true
+
+      # image: summerwind/actions-runner-dind-rootless
+      # dockerdWithinRunnerContainer: true
+
+      containerMode: kubernetes
+      serviceAccountName: runner-role
+      workVolumeClaimTemplate:
+
+        # Does not work to omit storageClassName
+        # storageClassName: "my-dynamic-storage-class"
+        # This results in a PVC with the following spec:
+        # storageClassName: ""
+
+        storageClassName: local-path
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
+      env: []
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: actions-runner
+  name: runner-role
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "create", "delete"]
+- apiGroups: [""]
+  resources: ["pods/exec"]
+  verbs: ["get", "create"]
+- apiGroups: [""]
+  resources: ["pods/log"]
+  verbs: ["get", "list", "watch",]
+- apiGroups: ["batch"]
+  resources: ["jobs"]
+  verbs: ["get", "list", "create", "delete"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "list", "create", "delete"]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: runner-role
+  namespace: actions-runner
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: runner-role
+  namespace: actions-runner
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: runner-role
+subjects:
+- namespace: actions-runner
+  kind: ServiceAccount
+  name: runner-role
