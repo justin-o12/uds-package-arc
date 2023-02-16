@@ -4,7 +4,11 @@ metadata:
   description: "Deploys actions/actions-runner-controller self hosted GitHub Actions"
 
 variables:
-  - name: GITHUB_TOKEN
+  - name: GITHUB_APP_ID
+    prompt: true
+  - name: GITHUB_APP_INSTALLATION_ID
+    prompt: true
+  - name: GITHUB_APP_PRIVATE_KEY
     prompt: true
 
 components:
