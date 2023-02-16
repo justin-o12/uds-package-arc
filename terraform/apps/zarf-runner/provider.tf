@@ -3,7 +3,6 @@ terraform {
   required_providers {
     aws = {
       source = "hashicorp/aws"
-	  region = "us-east-2"
     }
   }
   required_version = ">= 1.2"
@@ -14,4 +13,8 @@ terraform {
     region         = "us-east-2"
     dynamodb_table = "tfstate-dd-kb-table"
   }
+}
+
+provider "aws" {
+  region = "us-east-2"
 }
