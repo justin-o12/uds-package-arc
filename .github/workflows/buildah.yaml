@@ -1,4 +1,4 @@
-name: test
+name: buildah
 
 on: workflow_dispatch
 
@@ -113,7 +113,7 @@ jobs:
   buildah-in-rootful-seccomp-unconfined-container-chroot-isolation:
     strategy:
       matrix:
-        label: [default, dind, dind-rootless]
+        label: [default, dind]
       fail-fast: false
     runs-on: [self-hosted, linux, "${{ matrix.label }}" ]
 
@@ -135,6 +135,7 @@ jobs:
       image: quay.io/buildah/stable:v1.21.0
       env:
         BUILDAH_ISOLATION: chroot
+      # k8s default: (inherited from cluster)
       # options: --security-opt=seccomp=unconfined
       
     steps:
