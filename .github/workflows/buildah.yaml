@@ -6,8 +6,8 @@ jobs:
   buildah:
     runs-on: ubuntu-latest
 
-    container:
-      image: fedora:latest
+    # container:
+    #   image: fedora:latest
       
     steps:
     - uses: actions/checkout@v3
@@ -18,8 +18,8 @@ jobs:
 
     - name: install buildah
       run: |
-        sudo apt update
-        sudo apt install buildah
+        sudo apt-get update
+        sudo apt-get -y install buildah
 
     # - name: Buildah Action
     #   uses: redhat-actions/buildah-build@v2
