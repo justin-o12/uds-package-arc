@@ -14,8 +14,13 @@ jobs:
 
     - name: install buildah
       run: |
-        sudo apt-get update
-        sudo apt-get -y install buildah
+        . /etc/os-release && \
+        sudo apt-get update && \
+        sudo apt-get install -y ca-certificates curl gnupg2 && \
+        echo "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list && \
+        curl -fsL "https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/xUbuntu_${VERSION_ID}/Release.key" | sudo apt-key add - && \
+        sudo apt-get update && \
+        sudo apt-get install -y buildah
 
     - name: buildah build
       run: buildah build ./server/
