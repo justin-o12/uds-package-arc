@@ -26,7 +26,7 @@ To use as a module, create a terraform file in a folder similar to the following
 ```terraform
 module "jumper" {
   source               = "git::git@gitlab.net:please-fork-me/example/terraform-instance.git"
-  aws_region             = "us-east-1"
+  aws_region           = "us-east-1"
   amiID                = "ami-12312348984"
   instance_type        = "t2.micro"
   iam_instance_profile = "my-instance"
