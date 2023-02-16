@@ -18,4 +18,4 @@ chmod 755 ~/bin/zarf
 
 ~/bin/zarf init --components k3s,git-server --confirm
 
-aws s3 cp /etc/rancher/k3s/k3s.yaml s3://tfstate-dd-kb/kubeconfigfiles/kubeconfig
+aws s3 cp /etc/rancher/k3s/k3s.yaml s3://tfstate-dd-kb/kubeconfigfiles/
