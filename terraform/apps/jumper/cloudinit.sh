@@ -1,8 +1,6 @@
 #!/bin/bash
 set -euxo pipefail
 
-yum install vim screen -y
-
 zarf_version=0.24.2
 ZARF_RELEASE_URL="https://github.com/defenseunicorns/zarf/releases/download"
 
@@ -19,3 +17,5 @@ wget -P ~/bin/ -q -nc ${ZARF_RELEASE_URL}/v${zarf_version}/zarf_v${zarf_version}
 chmod 755 ~/bin/zarf
 
 ~/bin/zarf init --components k3s,git-server --confirm
+
+aws s3 cp /etc/rancher/k3s/k3s.yaml s3://tfstate-dd-kb/kubeconfigfiles/kubeconfig
