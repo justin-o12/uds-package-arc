@@ -2,6 +2,10 @@ locals {
   zarf_cloudinit_shell = file("cloudinit.sh")
 }
 
+data "aws_vpc" "example_vpc" {
+  id = var.vpc_id
+}
+
 resource "aws_security_group" "instance_security_group" {
   name        = "${var.shortname}_security_group"
   description = "${var.shortname} security groups"
@@ -12,10 +16,6 @@ resource "aws_security_group" "instance_security_group" {
       "Name" = "${var.shortname}_security_group",
     })
   )
-}
-
-data "aws_vpc" "example_vpc" {
-  id = var.vpc_id
 }
 
 resource "aws_security_group_rule" "self" {
