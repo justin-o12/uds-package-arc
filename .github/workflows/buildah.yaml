@@ -6,6 +6,10 @@ jobs:
   docker:
     name: "docker"
     runs-on: [self-hosted, linux]
+
+    container:
+      image: fedora:latest
+      
     steps:
     - uses: actions/checkout@v2
     - name: docker build nodejs
