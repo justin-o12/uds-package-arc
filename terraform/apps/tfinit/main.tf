@@ -18,11 +18,11 @@ provider "aws" {
 resource "aws_s3_bucket" "tfbucket" {
   bucket = var.bucket_name
 
-  tags = tomap({
-    TEAM = "dashdays-kibbles-and-bits",
+  tags = {
+    TEAM = "dashdays-kibbles-and-bits"
     Name = "${var.bucket_name}"
-    Role = "DashDays GitHub Actions runner terraform bucket for state files",
-  })
+    Role = "DashDays GitHub Actions runner terraform bucket for state files"
+  }
 }
 
 resource "aws_s3_bucket_acl" "tfbucket_acl" {
@@ -41,11 +41,11 @@ resource "aws_dynamodb_table" "action_locktable" {
   hash_key       = "LockID"
   stream_enabled = false
 
-  tags = tomap({
-    TEAM = "dashdays-kibbles-and-bits",
+  tags = {
+    TEAM = "dashdays-kibbles-and-bits"
     Name = "${var.bucket_name}-table"
-    Role = "DashDays GitHub Actions runner terraform locktable",
-  })
+    Role = "DashDays GitHub Actions runner terraform locktable"
+  }
 
   attribute {
     name = "LockID"
