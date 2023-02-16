@@ -16,32 +16,74 @@ data "aws_ami" "ubuntu" {
 
 
 data "aws_ami" "amazon-linux-2" {
- most_recent = true
- filter {
-   name   = "owner-alias"
-   values = ["amazon"]
- }
+  most_recent = true
+  filter {
+    name   = "owner-alias"
+    values = ["amazon"]
+  }
 
- filter {
-   name   = "name"
-   values = ["amzn2-ami-hvm*"]
- }
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm*"]
+  }
+}
+
+resource "aws_security_group" "instance_security_group" {
+  name        = "${var.shortname}_security_group"
+  description = "${var.shortname} security groups"
+  vpc_id      = data.aws_vpc.example_vpc.id
+  tags = merge(
+    var.tags,
+    tomap({
+      "Name" = "${var.shortname}_security_group",
+    })
+  )
+}
+
+data "aws_vpc" "example_vpc" {
+  id = var.vpc_id
+}
+
+resource "aws_security_group_rule" "self" {
+  type              = "ingress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  self              = true
+  security_group_id = aws_security_group.instance_security_group.id
+}
+
+resource "aws_security_group_rule" "ssh" {
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.instance_security_group.id
+}
+
+resource "aws_security_group_rule" "egress" {
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.instance_security_group.id
 }
 
 resource "aws_instance" "foo" {
-  ami           = data.aws_ami.amazon-linux-2.image_id
-  instance_type = "t3.medium"
+  ami                         = data.aws_ami.amazon-linux-2.image_id
+  instance_type               = var.instance_type
   associate_public_ip_address = true
 
-    vpc_security_group_ids = [
-    "sg-0a38d0e90d11c8ad4"
-  ]
+  vpc_security_group_ids = [aws_security_group.instance_security_group.id]
 
-  tags = merge(
-    var.tags,
-    tomap({ "Name" = "I am a Jacks EC2 instance",
-    })
-  )
+  tags = var.tags
+  # tags = merge(
+  #   var.tags,
+  #   tomap({ "Name" = "I am a Jacks EC2 instance",
+  #   })
+  # )
   user_data = <<EOF
 #!/bin/bash
 mkdir -p -m 700 /home/ec2-user/.ssh
