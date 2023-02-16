@@ -57,7 +57,6 @@ data "cloudinit_config" "example_cloudinit" {
 }
 
 resource "aws_instance" "foo" {
-  name                        = "${var.shortname}-ec2-runner"
   ami                         = data.aws_ami.amazon-linux-2.image_id
   instance_type               = var.instance_type
   associate_public_ip_address = true
@@ -69,8 +68,8 @@ resource "aws_instance" "foo" {
   user_data_base64 = data.cloudinit_config.example_cloudinit.rendered
   tags = merge(
     var.tags,
-    tomap({ 
-	"Name" = "${var.shortname}-ec2-runner",
+    tomap({
+      "Name" = "${var.shortname}-ec2-runner",
     })
   )
 }
