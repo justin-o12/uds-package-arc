@@ -12,7 +12,15 @@ jobs:
       
     steps:
     - uses: actions/checkout@v2
-    - name: docker build nodejs
-      id: build-node
-      run: |
-        docker build ./server/ 
+    # - name: docker build nodejs
+    #   id: build-node
+    #   run: |
+    #     docker build ./server/ 
+
+    - name: Buildah Action
+      uses: redhat-actions/buildah-build@v2
+      with:
+        image: test-image
+        tags: v1 ${{ github.sha }}
+        containerfiles: |
+          ./server/dockerfile
