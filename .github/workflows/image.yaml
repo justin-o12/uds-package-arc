@@ -3,12 +3,26 @@ name: image-test
 on: workflow_dispatch
 
 jobs:
-  container-test-job:
-    runs-on: [self-hosted,linux]
+  fedora:
+
+    strategy:
+      matrix:
+        label: [default, dind, dind-rootless, kubernetes]
+    runs-on: [self-hosted, linux, "${{ matrix.label }}" ]
 
     container:
       image: fedora:latest
 
     steps:
-      - name: Check for dockerenv file
+      - name: /etc/os-release
+        run: cat /etc/os-release
+
+  ubuntu:
+    runs-on: [self-hosted, linux] # Will use an available runner at random
+
+    container:
+      image: ubuntu:latest
+
+    steps:
+      - name: /etc/os-release
         run: cat /etc/os-release

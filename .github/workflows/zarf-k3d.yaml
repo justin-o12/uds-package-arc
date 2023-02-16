@@ -1,10 +1,15 @@
-name: zarf k3d example
+name: zarf k3d
 
 on: workflow_dispatch
 
 jobs:
   deploy_package:
-    runs-on: [self-hosted,linux]
+    strategy:
+      matrix:
+        label: [default, dind, dind-rootless, kubernetes]
+    runs-on: [self-hosted, linux, "${{ matrix.label }}" ]
+    # will fail on dind-rootless: k3d doesn't work with rootless Docker
+    # will fail on kubernetes: no container: specified in this workflow (and no Docker availble)
 
     name: Create & deploy my cool Zarf Package
     steps:
@@ -22,11 +27,6 @@ jobs:
 
       - name: Create a k3d cluster
         run: |
-          mkdir -p ~/bin
-          export K3D_INSTALL_DIR=~/bin
-          export PATH=$PATH:$HOME/bin
-          export USE_SUDO=false
-
           curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
           k3d cluster delete && k3d cluster create
 
