@@ -77,32 +77,6 @@ jobs:
   #   - name: buidlah build
   #     run: buildah build ./server/
 
-
-  # docker run --rm -it \
-  #     -v "${PWD}:/workspace:ro" \
-  #     -e BUILDAH_ISOLATION=oci \
-  #     --privileged \
-  #     --workdir /workspace \
-  #     quay.io/buildah/stable:v1.21.0 \
-  #         buildah bud -f Dockerfile
-  buildah-in-rootful-privileged-container-oci-isolation:
-    strategy:
-      matrix:
-        label: [default, dind]
-      fail-fast: false
-    runs-on: [self-hosted, linux, "${{ matrix.label }}" ]
-
-    container:
-      image: quay.io/buildah/stable:v1.21.0
-      env:
-        BUILDAH_ISOLATION: oci
-      options: --privileged
-      
-    steps:
-    - uses: actions/checkout@v3
-    - name: buidlah build
-      run: buildah bud ./server/
-
   # docker run --rm -it \
   #     -v "${PWD}:/workspace:ro" \
   #     -e BUILDAH_ISOLATION=chroot \
@@ -110,6 +84,41 @@ jobs:
   #     --workdir /workspace \
   #     quay.io/buildah/stable:v1.21.0 \
   #         buildah --storage-driver=vfs bud -f Dockerfile
+
+
+  buildah-in-rootful-seccomp-unconfined-container-oci-isolation:
+    strategy:
+      matrix:
+        label: [default, dind]
+      fail-fast: false
+    runs-on: [self-hosted, linux, "${{ matrix.label }}" ]
+
+    container:
+      image: quay.io/buildah/stable:v1.29.0
+      env:
+        BUILDAH_ISOLATION: oci
+      options: --security-opt=seccomp=unconfined
+      
+    steps:
+    - uses: actions/checkout@v3
+    - name: buidlah build
+      run: buildah --storage-driver=vfs bud ./server/
+
+  buildah-in-rootful-seccomp-unconfined-container-oci-isolation-dind-rootless:
+    runs-on: [self-hosted, linux, dind-rootless ]
+
+    container:
+      image: quay.io/buildah/stable:v1.29.0
+      env:
+        BUILDAH_ISOLATION: oci
+      options: --privileged --user=build --workdir=/home/build
+      
+    steps:
+    - uses: actions/checkout@v3
+    - name: buidlah build
+      run: buildah --storage-driver=vfs bud ./server/
+
+
   buildah-in-rootful-seccomp-unconfined-container-chroot-isolation:
     strategy:
       matrix:
@@ -118,10 +127,24 @@ jobs:
     runs-on: [self-hosted, linux, "${{ matrix.label }}" ]
 
     container:
-      image: quay.io/buildah/stable:v1.21.0
+      image: quay.io/buildah/stable:v1.29.0
       env:
         BUILDAH_ISOLATION: chroot
       options: --security-opt=seccomp=unconfined
+      
+    steps:
+    - uses: actions/checkout@v3
+    - name: buidlah build
+      run: buildah --storage-driver=vfs bud ./server/
+
+  buildah-in-rootful-seccomp-unconfined-container-chroot-isolation-dind-rootless:
+    runs-on: [self-hosted, linux, dind-rootless ]
+
+    container:
+      image: quay.io/buildah/stable:v1.29.0
+      env:
+        BUILDAH_ISOLATION: chroot
+      options: --privileged --user=build --workdir=/home/build
       
     steps:
     - uses: actions/checkout@v3
@@ -132,7 +155,7 @@ jobs:
     runs-on: [self-hosted, linux, kubernetes ]
 
     container:
-      image: quay.io/buildah/stable:v1.21.0
+      image: quay.io/buildah/stable:v1.29.0
       env:
         BUILDAH_ISOLATION: chroot
       # inherited from cluster, k8s has no seccomp policy by default
