@@ -26,4 +26,4 @@ jobs:
     #     containerfiles: |
     #       ./server/dockerfile
     - name: run image
-      run: buildah build ./server/
+      run: docker build ./server/
