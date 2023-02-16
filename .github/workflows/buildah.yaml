@@ -3,10 +3,10 @@ name: test
 on: [ push,workflow_dispatch ]
 
 jobs:
-  buildah:
+  buildah-build:
     strategy:
       matrix:
-        label: [default, dind, dind-rootless]
+        label: [default, dind]
       fail-fast: false
     runs-on: [self-hosted, linux, "${{ matrix.label }}" ]
     steps:
@@ -14,20 +14,22 @@ jobs:
 
     - name: install buildah
       run: |
-        apt-get update
-        apt-get -y install buildah
+        sudo apt-get update
+        sudo apt-get -y install buildah
 
-    - name: run image
+    - name: buildah build
       run: buildah build ./server/
 
-  buildah2:
+  buildah-on-container:
     strategy:
       matrix:
         label: [default, dind, dind-rootless, kubernetes]
       fail-fast: false
     runs-on: [self-hosted, linux, "${{ matrix.label }}" ]
+
     container:
       image: ubuntu:latest
+      options: --privileged
       
     steps:
     - uses: actions/checkout@v3
@@ -37,5 +39,5 @@ jobs:
         apt-get update
         apt-get -y install buildah
 
-    - name: run image
+    - name: buidlah build
       run: buildah build ./server/      
