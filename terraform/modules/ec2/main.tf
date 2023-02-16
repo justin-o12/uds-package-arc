@@ -87,6 +87,5 @@ resource "aws_instance" "foo" {
   user_data = <<EOF
 #!/bin/bash
 mkdir -p -m 700 /home/ec2-user/.ssh
-echo -e "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFI3KW4H2dC6SYUn9YTGNAioSD0mSfNjoNXxoMF+2soh barry@dadwork.local" >> /home/ec2-user/.ssh/authorized_keys
 EOF
 }
