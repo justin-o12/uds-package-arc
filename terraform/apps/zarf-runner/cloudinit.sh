@@ -12,10 +12,12 @@ sudo wget -P ~/.zarf-cache/ -q -nc ${ZARF_RELEASE_URL}/v${zarf_version}/zarf-ini
 # wget -q -nc ${ZARF_RELEASE_URL}/v${zarf_version}/zarf-init-${ARCH}-v${zarf_version}.tar.zst
 
 # Zarf CLI
-sudo wget -P ~/bin/ -q -nc ${ZARF_RELEASE_URL}/v${zarf_version}/zarf_v${zarf_version}_Linux_amd64 -O zarf
+sudo wget -q -nc ${ZARF_RELEASE_URL}/v${zarf_version}/zarf_v${zarf_version}_Linux_amd64 -O /usr/bin/zarf
 # wget -q -nc ${ZARF_RELEASE_URL}/v${zarf_version}/zarf_v${zarf_version}_Linux_${ARCH}
-sudo chmod 755 ~/bin/zarf
+sudo chmod 755 /usr/bin/zarf
+sync
 
-sudo ~/bin/zarf init --components k3s --confirm
+# sudo /usr/bin/zarf init --components k3s --confirm
+sudo zarf init --components k3s --confirm
 
 # aws s3 cp /etc/rancher/k3s/k3s.yaml s3://tfstate-dd-kb/kubeconfigfiles/
