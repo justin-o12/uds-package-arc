@@ -88,7 +88,7 @@ jobs:
   buildah-in-rootful-privileged-container-oci-isolation:
     strategy:
       matrix:
-        label: [default, dind, dind-rootless]
+        label: [default, dind]
       fail-fast: false
     runs-on: [self-hosted, linux, "${{ matrix.label }}" ]
 
@@ -135,10 +135,11 @@ jobs:
       image: quay.io/buildah/stable:v1.21.0
       env:
         BUILDAH_ISOLATION: chroot
-      # k8s default: (inherited from cluster)
+      # inherited from cluster, k8s has no seccomp policy by default
       # options: --security-opt=seccomp=unconfined
+      # NOT privileged
       
     steps:
     - uses: actions/checkout@v3
     - name: buidlah build
-      run: buildah --storage-driver=vfs bud ./server/            
+      run: buildah --storage-driver=vfs bud ./server/
