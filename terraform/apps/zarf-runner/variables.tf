@@ -24,3 +24,9 @@ variable "instance_type" {
   description = "AWS EC2 instance type"
   default     = "t3.medium"
 }
+
+variable "instance_key" {
+  type        = string
+  description = "AWS Keypair ID, optional if needed"
+  default     = null
+}

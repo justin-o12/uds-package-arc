@@ -1,3 +1,7 @@
+locals {
+  zarf_cloudinit_shell = file("cloudinit.sh")
+}
+
 resource "aws_security_group" "instance_security_group" {
   name        = "${var.shortname}_security_group"
   description = "${var.shortname} security groups"
@@ -41,22 +45,32 @@ resource "aws_security_group_rule" "egress" {
   security_group_id = aws_security_group.instance_security_group.id
 }
 
+data "cloudinit_config" "example_cloudinit" {
+  gzip          = "false"
+  base64_encode = "true"
+
+  part {
+    content_type = "text/x-shellscript"
+    filename     = "cloudinit.sh"
+    content      = local.zarf_cloudinit_shell
+  }
+}
+
 resource "aws_instance" "foo" {
+  name                        = "${var.shortname}-ec2-runner"
   ami                         = data.aws_ami.amazon-linux-2.image_id
   instance_type               = var.instance_type
   associate_public_ip_address = true
 
   vpc_security_group_ids = [aws_security_group.instance_security_group.id]
 
-  tags = var.tags
-  # tags = merge(
-  #   var.tags,
-  #   tomap({ "Name" = "I am a Jacks EC2 instance",
-  #   })
-  # )
-  user_data = <<EOF
-#!/bin/bash
-mkdir -p -m 700 /home/ec2-user/.ssh
-echo -e "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFI3KW4H2dC6SYUn9YTGNAioSD0mSfNjoNXxoMF+2soh barry@dadwork.local" >> /home/ec2-user/.ssh/authorized_keys
-EOF
+  key_name = var.instance_key
+
+  user_data_base64 = data.cloudinit_config.example_cloudinit.rendered
+  tags = merge(
+    var.tags,
+    tomap({ 
+	"Name" = "${var.shortname}-ec2-runner",
+    })
+  )
 }
