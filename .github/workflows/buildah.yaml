@@ -16,8 +16,10 @@ jobs:
     #   run: |
     #     docker build ./server/ 
 
-    # - name: install buildah
-    #   run: sudo dnf -y install buildah
+    - name: install buildah
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install buildah
 
     # - name: Buildah Action
     #   uses: redhat-actions/buildah-build@v2
