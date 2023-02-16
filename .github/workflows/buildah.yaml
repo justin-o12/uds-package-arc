@@ -20,7 +20,29 @@ jobs:
     - name: buildah build
       run: buildah build ./server/
 
-  buildah-on-container:
+  buildah-on-container-seccomp:
+    strategy:
+      matrix:
+        label: [default, dind, dind-rootless, kubernetes]
+      fail-fast: false
+    runs-on: [self-hosted, linux, "${{ matrix.label }}" ]
+
+    container:
+      image: ubuntu:latest
+      options: --security-opt seccomp=unconfined
+      
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: install buildah
+      run: |
+        apt-get update
+        apt-get -y install buildah
+
+    - name: buidlah build
+      run: buildah build ./server/     
+
+  buildah-on-container-privileged:
     strategy:
       matrix:
         label: [default, dind, dind-rootless, kubernetes]
@@ -40,4 +62,4 @@ jobs:
         apt-get -y install buildah
 
     - name: buidlah build
-      run: buildah build ./server/      
+      run: buildah build ./server/            
