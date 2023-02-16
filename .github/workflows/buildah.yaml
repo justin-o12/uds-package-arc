@@ -20,10 +20,12 @@ jobs:
     - name: install buildah
       run: sudo dnf -y install buildah
 
-    - name: Buildah Action
-      uses: redhat-actions/buildah-build@v2
-      with:
-        image: test-image
-        tags: v1 ${{ github.sha }}
-        containerfiles: |
-          ./server/dockerfile
+    # - name: Buildah Action
+    #   uses: redhat-actions/buildah-build@v2
+    #   with:
+    #     image: test-image
+    #     tags: v1 ${{ github.sha }}
+    #     containerfiles: |
+    #       ./server/dockerfile
+    - name: run image
+      run: buildah build ./server/
