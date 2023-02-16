@@ -4,7 +4,11 @@ metadata:
   description: "Deploys actions/actions-runner-controller self hosted GitHub Actions"
 
 variables:
-  - name: GITHUB_TOKEN
+  - name: GITHUB_APP_ID
+    prompt: true
+  - name: GITHUB_APP_INSTALLATION_ID
+    prompt: true
+  - name: GITHUB_APP_PRIVATE_KEY
     prompt: true
 
 components:
@@ -38,6 +42,8 @@ components:
     - summerwind/actions-runner-controller:v0.27.0
     - quay.io/brancz/kube-rbac-proxy:v0.13.1
 
+    # Required if `zarf.dev/agent: ignore` namespace label is not used:
     # - summerwind/actions-runner:latest
+    # - docker:dind
     # - summerwind/actions-runner-dind-rootless:latest
     # - summerwind/actions-runner-dind:latest
