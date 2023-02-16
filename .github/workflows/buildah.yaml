@@ -6,7 +6,7 @@ jobs:
   buildah:
     runs-on: [self-hosted,linux]
     container:
-      image: fedora:latest
+      image: ubuntu:latest
       
     steps:
     - uses: actions/checkout@v3
@@ -15,8 +15,8 @@ jobs:
     #   run: |
     #     docker build ./server/ 
 
-    - name: install buildah
-      run: sudo dnf -y install buildah
+    # - name: install buildah
+    #   run: sudo dnf -y install buildah
 
     # - name: Buildah Action
     #   uses: redhat-actions/buildah-build@v2
