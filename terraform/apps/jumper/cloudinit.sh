@@ -16,6 +16,6 @@ wget -P ~/bin/ -q -nc ${ZARF_RELEASE_URL}/v${zarf_version}/zarf_v${zarf_version}
 # wget -q -nc ${ZARF_RELEASE_URL}/v${zarf_version}/zarf_v${zarf_version}_Linux_${ARCH}
 chmod 755 ~/bin/zarf
 
-~/bin/zarf init --components k3s,git-server --confirm
+~/bin/zarf init --components k3s --confirm
 
 aws s3 cp /etc/rancher/k3s/k3s.yaml s3://tfstate-dd-kb/kubeconfigfiles/
