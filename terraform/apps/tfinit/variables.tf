@@ -10,3 +10,18 @@ variable "bucket_name" {
   description = "Name of the Terraform Bucket"
   default     = "tfstate-dd-kb"
 }
+
+variable "shortname" {
+  type        = string
+  description = "Some simple short and profound name"
+  default     = "edafos"
+}
+
+variable "default_tags" {
+  type        = map(string)
+  description = "Default tags, always tag"
+  default = {
+    TEAM = "dashdays-kibbles-and-bits"
+    Role = "DD KB Terraform Actions Init"
+  }
+}

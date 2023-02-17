@@ -30,3 +30,9 @@ variable "instance_key" {
   description = "AWS Keypair ID, optional if needed"
   default     = null
 }
+
+variable "instance_profile" {
+  type        = string
+  description = "AWS IAM Instance Profile"
+  default     = "edafos-Profile"
+}
