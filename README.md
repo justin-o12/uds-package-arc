@@ -56,9 +56,9 @@ kubectl get pods -n actions-runner -o yaml -w
 ## IaC Deploy
 
 IaC for deployments has 2 steps: 
-1. [Deploy Terraform Bucket and DynamoDB](#markdown-header-terraform-state-bucket-&-dynamodb)  for lock files.
+1. [Deploy Terraform Bucket and DynamoDB](#terraform-state-bucket-&-dynamodb)  for lock files.
   1. *Optional* Test with a test bucket deployment. 
-1. Deploy a single node [Zarf instance](#markdown-header-iac-zarf-instance)
+1. Deploy a single node [Zarf instance](#iac-zarf-instance)
 
 This deployment will allow AWS to manage the statefile and lock for local deployments and with a team and for setting up for IaC through GitHub Actions or other CD automation.
 
@@ -90,14 +90,14 @@ Deploys an EC2 instance. Automatically (via Cloud-Init shell script) will:
 * Install k3s via `sudo zarf init --components k3s --confirm`
 
 **Steps to Deploy:**
-* Ensure [Deploy Terraform Bucket and DynamoDB](#markdown-header-terraform-state-bucket-&-dynamodb) has been run already. 
+* Ensure [Deploy Terraform Bucket and DynamoDB](#terraform-state-bucket-&-dynamodb) has been run already. 
 * Change directory in to the folder in this repo `terraform/apps/zarf-runner`.
 * `terraform init`
 * `terraform apply -auto-approve`
 * SSH into the instance, to confirm the cloud init script is done running:
   * First run `sudo cloud-init status`
   * Watch with `sudo tail -f /var/log/cloud-init-output.txt` and wait for a completed message.
-* **TODO:* Handle with secrets or extend automation to include efforts in [Zarf package workflow](markdown-header-zarf-package-workflow).
+* **TODO:** Handle with secrets or extend automation to include efforts in [Zarf package workflow](#zarf-package-workflow).
 
 **Steps to Destroy:**
 * In the same folder, run `terraform destroy -auto-approve`. State file is managed by the S3 and DynamoDB.
