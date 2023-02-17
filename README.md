@@ -56,7 +56,7 @@ kubectl get pods -n actions-runner -o yaml -w
 ## IaC Deploy
 
 IaC for deployments has 2 steps: 
-1. [Deploy Terraform Bucket and DynamoDB](#terraform-state-bucket-&-dynamodb)  for lock files.
+1. [Deploy Terraform Bucket and DynamoDB](#terraform-state-bucket--dynamodb)  for lock files.
   1. *Optional* Test with a test bucket deployment. 
 1. Deploy a single node [Zarf instance](#iac-zarf-instance)
 
@@ -90,7 +90,7 @@ Deploys an EC2 instance. Automatically (via Cloud-Init shell script) will:
 * Install k3s via `sudo zarf init --components k3s --confirm`
 
 **Steps to Deploy:**
-* Ensure [Deploy Terraform Bucket and DynamoDB](#terraform-state-bucket-&-dynamodb) has been run already. 
+* Ensure [Deploy Terraform Bucket and DynamoDB](#terraform-state-bucket--dynamodb) has been run already. 
 * Change directory in to the folder in this repo `terraform/apps/zarf-runner`.
 * `terraform init`
 * `terraform apply -auto-approve`
