@@ -1,13 +1,21 @@
+# Zarf Runner 
+
+Easy default deployment example of deploying an EC2 instance and automagically deploying Zarf + K3s on a one node cluster. 
+
+
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-No requirements.
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.2 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
-| <a name="provider_cloudinit"></a> [cloudinit](#provider\_cloudinit) | n/a |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.55.0 |
+| <a name="provider_cloudinit"></a> [cloudinit](#provider\_cloudinit) | 2.2.0 |
 
 ## Modules
 
@@ -32,6 +40,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_instance_key"></a> [instance\_key](#input\_instance\_key) | AWS Keypair ID, optional if needed | `string` | `null` | no |
+| <a name="input_instance_profile"></a> [instance\_profile](#input\_instance\_profile) | AWS IAM Instance Profile | `string` | `"edafos-Profile"` | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | AWS EC2 instance type | `string` | `"t3.medium"` | no |
 | <a name="input_shortname"></a> [shortname](#input\_shortname) | short name for the deployment | `string` | `"zarfbuilder"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(string)` | <pre>{<br>  "Role": "EC2 instance stuff",<br>  "TEAM": "dashdays-kibbles-and-bits"<br>}</pre> | no |
@@ -40,3 +49,4 @@ No modules.
 ## Outputs
 
 No outputs.
+<!-- END_TF_DOCS -->
