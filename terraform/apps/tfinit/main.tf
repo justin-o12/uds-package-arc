@@ -16,8 +16,9 @@ provider "aws" {
 # S3 Bucket for the State File
 
 resource "aws_s3_bucket" "tfbucket" {
-  bucket = var.bucket_name
+  # bucket = var.bucket_name
 
+  bucket_prefix = "${var.bucket_name}-"
   tags = {
     TEAM = "dashdays-kibbles-and-bits"
     Name = "${var.bucket_name}"
