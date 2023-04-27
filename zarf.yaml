@@ -14,6 +14,13 @@ variables:
     prompt: true
 
 components:
+- name: zarf-ignore-arc-runners-ns
+  manifests:
+    - name: runner-scale-set-manifests
+      namespace: arc-runners
+      files:
+      - runner-scale-set/namespace.yaml
+
 - name: actions-runner-controller
   required: true
   charts:      
@@ -33,10 +40,6 @@ components:
       valuesFiles:
         - "runner-scale-set/values.yaml"
 
-  manifests:
-    - name: runner-scale-set-manifests
-      files:
-      - runner-scale-set/namespace.yaml
 
   images:
     - ghcr.io/actions/gha-runner-scale-set-controller:0.4.0
