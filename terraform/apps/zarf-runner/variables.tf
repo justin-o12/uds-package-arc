@@ -13,6 +13,12 @@ variable "tags" {
   }
 }
 
+variable "subnet_id" {
+  type        = string
+  description = "VPC ID"
+  default     = "vpc-0a38d0e90d11c8ad4"
+}
+
 variable "vpc_id" {
   type        = string
   description = "VPC ID"

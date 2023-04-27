@@ -6,6 +6,11 @@ data "aws_vpc" "example_vpc" {
   id = var.vpc_id
 }
 
+# Gets Subnet Id data
+data "aws_subnet" "example_subnet" {
+  id = var.subnet_id
+}
+
 resource "aws_security_group" "instance_security_group" {
   name        = "${var.shortname}_security_group"
   description = "${var.shortname} security groups"
@@ -60,8 +65,9 @@ resource "aws_instance" "foo" {
   ami                         = data.aws_ami.amazon-linux-2.image_id
   instance_type               = var.instance_type
   associate_public_ip_address = true
-  iam_instance_profile        = var.instance_profile 
+  iam_instance_profile        = var.instance_profile
   vpc_security_group_ids      = [aws_security_group.instance_security_group.id]
+  subnet_id                   = data.aws_subnet.example_subnet.id
 
   key_name = var.instance_key
 
