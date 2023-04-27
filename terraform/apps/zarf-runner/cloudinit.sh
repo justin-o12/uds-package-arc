@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euxo pipefail
 
-zarf_version=0.24.2
+zarf_version=0.26.1
 ZARF_RELEASE_URL="https://github.com/defenseunicorns/zarf/releases/download"
 
 # Save variable for pipeline runtime
