@@ -39,7 +39,7 @@ components:
       - runner-scale-set/namespace.yaml
 
   images:
-    - ghcr.io/actions/gha-runner-scale-set-controller:latest
+    - ghcr.io/actions/gha-runner-scale-set-controller:0.4.0
     - ghcr.io/actions/actions-runner:latest
     - docker:dind
 

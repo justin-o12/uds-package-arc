@@ -4,11 +4,7 @@ on: workflow_dispatch
 
 jobs:
   fedora:
-
-    strategy:
-      matrix:
-        label: [default, dind, dind-rootless, kubernetes]
-    runs-on: [self-hosted, linux, "${{ matrix.label }}" ]
+    runs-on: ["runner-scale-set"]
 
     container:
       image: fedora:latest
