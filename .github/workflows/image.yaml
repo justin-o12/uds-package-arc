@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 jobs:
   fedora:
-    runs-on: ["runner-scale-set"]
+    runs-on: ["k3d-local-runners-scaleset-001"]
 
     container:
       image: fedora:latest
@@ -14,7 +14,7 @@ jobs:
         run: cat /etc/os-release
 
   ubuntu:
-    runs-on: ["runner-scale-set"]
+    runs-on: ["k3d-local-runners-scaleset-001"]
 
     # run outside container if possible
     # container:

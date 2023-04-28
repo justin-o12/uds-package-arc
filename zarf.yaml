@@ -15,6 +15,7 @@ variables:
 
 components:
 - name: zarf-ignore-arc-runners-ns
+  required: true
   manifests:
     - name: runner-scale-set-manifests
       namespace: arc-runners
