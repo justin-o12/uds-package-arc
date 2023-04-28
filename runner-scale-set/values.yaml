@@ -44,10 +44,10 @@ githubConfigSecret:
 ## minRunners is the min number of runners the auto scaling runner set will scale down to.
 # minRunners: 0
 
-# runnerGroup: "default"
+runnerGroup: "###ZARF_VAR_GITHUB_RUNNER_GROUP###"
 
 ## name of the runner scale set to create.  Defaults to the helm release name
-# runnerScaleSetName: ""
+runnerScaleSetName: "###ZARF_VAR_GITHUB_RUNNER_SCALESET_NAME###"
 
 ## A self-signed CA certificate for communication with the GitHub server can be
 ## provided using a config map key selector. If `runnerMountPath` is set, for

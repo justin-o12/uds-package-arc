@@ -12,6 +12,11 @@ variables:
     prompt: true
   - name: GITHUB_APP_PRIVATE_KEY
     prompt: true
+  - name: GITHUB_RUNNER_GROUP
+    prompt: true
+    default: "default"
+  - name: GITHUB_RUNNER_SCALESET_NAME
+    prompt: true
 
 components:
 - name: zarf-ignore-arc-runners-ns
@@ -44,7 +49,7 @@ components:
 
   images:
     - ghcr.io/actions/gha-runner-scale-set-controller:0.4.0
-    - ghcr.io/actions/actions-runner:latest
+    - ghcr.io/actions/actions-runner:2.304.0
     - docker:dind
 
     # Required if `zarf.dev/agent: ignore` namespace label is not used:
