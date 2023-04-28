@@ -14,10 +14,11 @@ jobs:
         run: cat /etc/os-release
 
   ubuntu:
-    runs-on: [self-hosted, linux] # Will use an available runner at random
+    runs-on: ["runner-scale-set"]
 
-    container:
-      image: ubuntu:latest
+    # run outside container if possible
+    # container:
+    #   image: ubuntu:latest
 
     steps:
       - name: /etc/os-release
