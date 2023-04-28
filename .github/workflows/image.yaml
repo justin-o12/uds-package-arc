@@ -7,8 +7,7 @@ jobs:
     runs-on: ["k3d-local-runners-scaleset-001"]
 
     container:
-      image: fedora:latest
-
+      image: fedora:39
     steps:
       - name: /etc/os-release
         run: cat /etc/os-release
@@ -17,8 +16,8 @@ jobs:
     runs-on: ["k3d-local-runners-scaleset-001"]
 
     # run outside container if possible
-    # container:
-    #   image: ubuntu:latest
+    container:
+      image: ubuntu:22.10
 
     steps:
       - name: /etc/os-release
