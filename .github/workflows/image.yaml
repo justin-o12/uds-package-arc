@@ -14,7 +14,8 @@ jobs:
         run: cat /etc/os-release
 
   ubuntu:
-    runs-on: ["k3d-local-runners-scaleset-001"]
+    runs-on:
+      group: kibbles-and-bits
 
     # run outside container if possible
     container:
