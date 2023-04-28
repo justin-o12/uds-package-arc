@@ -4,7 +4,8 @@ on: workflow_dispatch
 
 jobs:
   fedora:
-    runs-on: ["k3d-local-runners-scaleset-001"]
+    runs-on:
+      group: kibbles-and-bits
 
     container:
       image: fedora:39
