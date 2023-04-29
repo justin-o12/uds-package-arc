@@ -17,6 +17,8 @@ variables:
     default: "default"
   - name: GITHUB_RUNNER_SCALESET_NAME
     prompt: true
+  - name: GITHUB_RUNNER_STORAGE_CLASS
+    prompt: true
 
 components:
 - name: zarf-ignore-arc-runners-ns
