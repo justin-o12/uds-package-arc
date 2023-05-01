@@ -6,9 +6,9 @@
 zarf package create
 
 cat >zarf-config.toml <<EOF
-[package.deploy.set]
 # https://github.com/actions/actions-runner-controller/blob/master/docs/authenticating-to-the-github-api.md#deploying-using-github-app-authentication
 [package.deploy.set]
+github_config_url = "https://github.com/defenseunicorns/kibbles-AND-bits"
 github_app_id = "123"
 github_app_installation_id = "456"
 github_app_private_key = """-----BEGIN RSA PRIVATE KEY-----\n
@@ -30,17 +30,20 @@ zarf package deploy zarf-package-actions-runner-controller-full-amd64.tar.zst
 
 Useful debug commands:
 ```bash
+# TODO: verify with scale sets:
+
+
 # actions controller logs, includes 401 error if PAT is bad
 # should show no errors
-kubectl logs -n actions-runner-system deployment/arc-actions-runner-controller -f
+kubectl logs -n arc-systems deployment/arc-actions-runner-controller -f
 
 # Inspect the runners:
-kubectl get RunnerDeployment,Runner,Pods -n actions-runner
+kubectl get RunnerDeployment,Runner,Pods -n arc-runners
 
 # If the Secret is updated, the actions-runner-controller is not automatically restarted
 # You need to restart it manually
 # This is arguably a bug in the actions-runner-controller helm chart
-kubectl rollout restart deployment -n actions-runner-system arc-actions-runner-controller
+kubectl rollout restart deployment -n arc-systems
 
 # Runner should appear as "idle" at:
 # https://github.com/defenseunicorns/kibbles-AND-bits/settings/actions/runners
@@ -48,9 +51,9 @@ kubectl rollout restart deployment -n actions-runner-system arc-actions-runner-c
 
 #debug ephemeral runner Pods:
 
-kubectl get pods -n actions-runner  -w -o 'custom-columns=NAME:.metadata.name,IMAGES:.spec.containers[*].image,VOLUMES:.spec.volumes[*].name,PHASE:.status.phase'
+kubectl get pods -n arc-runners  -w -o 'custom-columns=NAME:.metadata.name,IMAGES:.spec.containers[*].image,VOLUMES:.spec.volumes[*].name,PHASE:.status.phase'
 
-kubectl get pods -n actions-runner -o yaml -w
+kubectl get pods -n arc-runners -o yaml -w
 ```
 
 ## IaC Deploy

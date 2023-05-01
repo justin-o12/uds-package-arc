@@ -4,43 +4,55 @@ metadata:
   description: "Deploys actions/actions-runner-controller self hosted GitHub Actions"
 
 variables:
+  - name: GITHUB_CONFIG_URL
+    prompt: true
   - name: GITHUB_APP_ID
     prompt: true
   - name: GITHUB_APP_INSTALLATION_ID
     prompt: true
   - name: GITHUB_APP_PRIVATE_KEY
     prompt: true
+  - name: GITHUB_RUNNER_GROUP
+    prompt: true
+    default: "default"
+  - name: GITHUB_RUNNER_SCALESET_NAME
+    prompt: true
+  - name: GITHUB_RUNNER_STORAGE_CLASS
+    prompt: true
 
 components:
-- name: cert-manager
+- name: zarf-ignore-arc-runners-ns
   required: true
   manifests:
-  - name: cert-manager
-    namespace: cert-manager
-    files:
-      - cert-manager.yaml
-  images:
-    - quay.io/jetstack/cert-manager-cainjector:v1.8.2
-    - quay.io/jetstack/cert-manager-controller:v1.8.2
-    - quay.io/jetstack/cert-manager-ctl:v1.11.0
-    - quay.io/jetstack/cert-manager-webhook:v1.8.2
+    - name: runner-scale-set-manifests
+      namespace: arc-runners
+      files:
+      - runner-scale-set/namespace.yaml
+
 - name: actions-runner-controller
   required: true
   charts:      
-    - name: actions-runner-controller
-      releaseName: arc
-      url: https://actions-runner-controller.github.io/actions-runner-controller
-      version: 0.22.0
-      namespace: actions-runner-system
+    - name: runner-scale-set-controller
+      releaseName: runner-scale-set-controller
+      url: oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set-controller
+      version: 0.4.0
+      namespace: arc-systems
       valuesFiles:
-        - "values.yaml"
-  manifests:
-    - name: actions-runner-controller-config
-      files:
-      - runner-deployment.yaml
+        - "runner-scale-set-controller/values.yaml"
+
+    - name: runner-scale-set
+      releaseName: runner-scale-set
+      url: oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set
+      version: 0.4.0
+      namespace: arc-runners
+      valuesFiles:
+        - "runner-scale-set/values.yaml"
+
+
   images:
-    - summerwind/actions-runner-controller:v0.27.0
-    - quay.io/brancz/kube-rbac-proxy:v0.13.1
+    - ghcr.io/actions/gha-runner-scale-set-controller:0.4.0
+    - ghcr.io/actions/actions-runner:latest
+    - docker:dind
 
     # Required if `zarf.dev/agent: ignore` namespace label is not used:
     # - summerwind/actions-runner:latest
