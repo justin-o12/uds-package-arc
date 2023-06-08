@@ -39,10 +39,10 @@ githubConfigSecret:
 #     - example.org
 
 ## maxRunners is the max number of runners the auto scaling runner set will scale up to.
-# maxRunners: 5
+# maxRunners: "###ZARF_VAR_GITHUB_MAX_RUNNERS###"
 
 ## minRunners is the min number of runners the auto scaling runner set will scale down to.
-# minRunners: 0
+# minRunners: "###ZARF_VAR_GITHUB_MIN_RUNNERS###"
 
 runnerGroup: "###ZARF_VAR_GITHUB_RUNNER_GROUP###"
 
