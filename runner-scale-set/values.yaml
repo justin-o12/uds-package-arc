@@ -39,10 +39,10 @@ githubConfigSecret:
 #     - example.org
 
 ## maxRunners is the max number of runners the auto scaling runner set will scale up to.
-# maxRunners: "###ZARF_VAR_GITHUB_MAX_RUNNERS###"
+maxRunners: "###ZARF_VAR_GITHUB_RUNNER_MAX###"
 
 ## minRunners is the min number of runners the auto scaling runner set will scale down to.
-# minRunners: "###ZARF_VAR_GITHUB_MIN_RUNNERS###"
+minRunners: "###ZARF_VAR_GITHUB_RUNNER_MIN###"
 
 runnerGroup: "###ZARF_VAR_GITHUB_RUNNER_GROUP###"
 
@@ -76,10 +76,10 @@ containerMode:
   kubernetesModeWorkVolumeClaim:
     accessModes: ["ReadWriteOnce"]
     # For local testing, use https://github.com/openebs/dynamic-localpv-provisioner/blob/develop/docs/quickstart.md to provide dynamic provision volume with storageClassName: openebs-hostpath
-    storageClassName:  "###ZARF_VAR_STORAGE_CLASS###"
+    storageClassName:  "###ZARF_VAR_GITHUB_RUNNER_STORAGE_CLASS###"
     resources:
       requests:
-        storage: 1Gi
+        storage: "###ZARF_VAR_GITHUB_RUNNER_STORAGE_SIZE###"
 
 ## template is the PodSpec for each runner Pod
 template:
