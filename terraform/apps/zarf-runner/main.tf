@@ -60,7 +60,7 @@ resource "aws_instance" "foo" {
   ami                         = data.aws_ami.amazon-linux-2.image_id
   instance_type               = var.instance_type
   associate_public_ip_address = true
-  iam_instance_profile        = var.instance_profile 
+  iam_instance_profile        = var.instance_profile
   vpc_security_group_ids      = [aws_security_group.instance_security_group.id]
 
   key_name = var.instance_key
