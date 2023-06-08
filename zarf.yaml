@@ -21,8 +21,13 @@ variables:
     prompt: true
   - name: GITHUB_MAX_RUNNERS
     prompt: true
+    default: "5"
   - name: GITHUB_MIN_RUNNERS
     prompt: true
+    default: "0"
+  - name: GITHUB_RUNNER_STORAGE_SIZE
+    prompt: true
+    default: "1Gi"
 
 components:
 - name: zarf-ignore-arc-runners-ns
