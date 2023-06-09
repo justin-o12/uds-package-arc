@@ -9,7 +9,7 @@ terraform {
 
   backend "s3" {
     bucket         = "tfstate-dd-kb-20230608200916573100000001"
-    key            = "statefiles/us-east-2/oci-zarfinstance.tfstate"
+    key            = "statefiles/us-east-2/zarfinstance.tfstate"
     region         = "us-east-2"
     dynamodb_table = "tfstate-dd-kb-table"
   }
