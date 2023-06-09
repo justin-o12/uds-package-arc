@@ -1,14 +1,49 @@
 # Kibbles and Bits 
+ 
+This Zarf package installs [actions-runner-controller](https://github.com/actions/actions-runner-controller) (ARC) and deploys a self hosted GitHub Actions runner.
 
-### Installation
+A GitHub App is installed to authenticate to GitHub and register runners. This is preferable to using Personal Access Tokens, which are tied to a specific user's identity.
+
+The runner is installed as a [scale set](https://github.com/actions/actions-runner-controller/blob/master/docs/preview/gha-runner-scale-set-controller/README.md). This is a new (preview) GitHub feature for self hosted runner which is more secure and more efficient. Scale sets support scaling to zero when not in use. Also, the runner is significantly more secure, because the (org) runner registration token is not exposed to runners, instead only a per-workflow JIT token is used.
+
+The runners are installed using the [`containerMode: kubernetes` mode of ARC](https://github.com/actions/actions-runner-controller/blob/master/docs/deploying-alternative-runners.md#runner-with-k8s-jobs). This uses the k8s hooks from [runner-container-hooks](https://github.com/actions/runner-container-hooks) to run each job of the pipeline as a Kubernetes Pod with the workflow specified container image. Note that all workflow jobs MUST [specify a `container:`](https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#example-using-a-dockerfile-in-your-repository). Also, [docker container actions that use `runs.image: Dockerfile`](https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#example-using-a-dockerfile-in-your-repository) are NOT compatible (if they use a public Docker image instead of `Dockerfile` they are compatible though). Also, `docker` will not be usable within the workflow steps and `docker build` will not work.
+
+There is an alternative `containerMode: dind` which removes these restrictions but it uses a privileged Docker sidecar container to execute containers and run `docker` commands. Due to it's use of privileged it provides significantly less security isolation.
+
+Note that the k8s container hooks do not currently support configuring the Pod spec of workflow pods and resource limits or custom volume mounts are not currently possible, see https://github.com/actions/runner-container-hooks/pull/50#issuecomment-1551874570. If you require this immediately, a hacky solution is to use a mutating admission webhook such as Kyverno to mutate Pods named `*-workflow`.
+
+The workflow Pods are run in the `arc-runners` Kubernetes namespace. This namespace has a [`zarf.dev/agent: ignore` label](https://github.com/defenseunicorns/kibbles-AND-bits/blob/main/runner-scale-set/namespace.yaml#L5) to exclude it from Zarf Agent image rewriting and allow workflows to use public images not available in the zarf registry.
+
+## When should actually you use self hosted runners?
+
+Public repos get completely free (infinite, within reason) hours of GitHub.com hosted Actions on public repos:  
+https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration
+>GitHub Actions usage is free for standard GitHub-hosted runners in public repositories, and for self-hosted runners.
+
+Generally GitHub's hosted runners will be more secure (mostly: more ephemeral) than anything you can ever self host. They're basically (free!) Azure VMs they run the fly for you. With self hosted runners, it is potentially possible for the the runner host to be persistently compromised.
+
+Use cases for self hosted runners:
+* Self hosted GitHub Enterprise: you don't get any GitHub-hosted runners at all
+* On prem runners (a self hosted runner has access to the local network and can easily interact with local resources)
+* Bigger runners than the free GitHub-hosted runners
+    * Note, larger runners are available by paying GitHub: https://docs.github.com/en/actions/using-github-hosted-runners/using-larger-runners
+    * Or, you can instead self host ARC in AWS with a larger instance size and pay AWS for EC2 or EKS
+* Private repos which do not have infinite free GitHub-hosted runner minutes
+    * Note, additional minutes are available by paying GitHub: https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions
+    * Or, you can self host ARC in AWS and pay AWS for EC2 or EKS
+* Running a runner inside the dev/staging VPC or inside the staging k8s cluster (in a VPC) to allow easy access to (maybe private) AWS resources
+    * Note, please compare to using some type of VPN solution and maybe [authenticate with the GitHub Actions OIDC JWT ID token](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services)
+* Running a runner inside AWS to minimize network transfer for faster transfers and minimizing billing for ingress/egress
+
+## Installation
 
 The following instructions describe how to create and install a GitHub App onto a GitHub _org_. A similar process can be used to install the GitHub App onto a single repository only. Note, that you can also install the GitHub App onto an org and limit it's "Repository access" to "Only select repositories".
 
-See the upstream actions-runner-controller documentation for full installation steps:
+See the upstream ARC documentation for full installation steps:  
 https://github.com/actions/actions-runner-controller/blob/master/docs/authenticating-to-the-github-api.md#deploying-using-github-app-authentication
 
 1. **Create an GitHub App on your GitHub org**
-   * Contrary to the actions-runner-controller documentation, "Administration (read / write)" permissions are not required.
+   * Contrary to the ARC documentation, "Administration (read / write)" permissions are not required.
    * You may use the following URL to create the application on an org. Replace `:org` in the following URL with the name of your org:
      ```
      https://github.com/organizations/:org/settings/apps/new?url=http://github.com/actions/actions-runner-controller&webhook_active=false&public=false&organization_self_hosted_runners=write&actions=read&checks=read
@@ -66,7 +101,7 @@ https://github.com/actions/actions-runner-controller/blob/master/docs/authentica
    # By default it will scale to zero.
    #github_min_runners = 0
    ```
-7. Install the actions-runner-controler Zarf package
+7. **Install the actions-runner-controler Zarf package**
    ```bash
    zarf package deploy oci://ghcr.io/defenseunicorns/packages/actions-runner-controller:0.0.1-amd64
    ```
