@@ -59,6 +59,7 @@ components:
         - "runner-scale-set/values.yaml"
 
   images:
-    - ghcr.io/actions/gha-runner-scale-set-controller:0.4.0
     - ghcr.io/actions/actions-runner:latest
     - docker:dind
+    # renovate: datasource=docker
+    - ghcr.io/actions/gha-runner-scale-set-controller:0.4.0
