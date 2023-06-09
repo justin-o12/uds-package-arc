@@ -2,7 +2,7 @@ kind: ZarfPackageConfig
 metadata:
   name: actions-runner-controller
   description: "Deploys actions/actions-runner-controller self hosted GitHub Actions"
-  version: 0.0.1
+  version: "###ZARF_PKG_TMPL_VERSION###"
 
 variables:
   - name: GITHUB_CONFIG_URL
