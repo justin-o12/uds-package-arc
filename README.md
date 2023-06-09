@@ -2,7 +2,7 @@
 
 ### Installation
 
-The following instructions describe how to create and install a GitHub App onto a GitHub _org_. A similar process can be used to install onto a single repository only. Note, that you can also install the GitHub App onto an org and limit it's "Repository access" to "Only select repositories".
+The following instructions describe how to create and install a GitHub App onto a GitHub _org_. A similar process can be used to install the GitHub App onto a single repository only. Note, that you can also install the GitHub App onto an org and limit it's "Repository access" to "Only select repositories".
 
 See the upstream actions-runner-controller documentation for full installation steps:
 https://github.com/actions/actions-runner-controller/blob/master/docs/authenticating-to-the-github-api.md#deploying-using-github-app-authentication
