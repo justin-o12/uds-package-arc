@@ -1,7 +1,8 @@
 kind: ZarfPackageConfig
 metadata:
-  name: actions-runner-controller-full
+  name: actions-runner-controller
   description: "Deploys actions/actions-runner-controller self hosted GitHub Actions"
+  version: 0.0.1
 
 variables:
   - name: GITHUB_CONFIG_URL
@@ -57,14 +58,7 @@ components:
       valuesFiles:
         - "runner-scale-set/values.yaml"
 
-
   images:
     - ghcr.io/actions/gha-runner-scale-set-controller:0.4.0
     - ghcr.io/actions/actions-runner:latest
     - docker:dind
-
-    # Required if `zarf.dev/agent: ignore` namespace label is not used:
-    # - summerwind/actions-runner:latest
-    # - docker:dind
-    # - summerwind/actions-runner-dind-rootless:latest
-    # - summerwind/actions-runner-dind:latest
