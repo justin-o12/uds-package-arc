@@ -20,4 +20,13 @@ sync
 # sudo /usr/bin/zarf init --components k3s --confirm
 sudo zarf init --components k3s --confirm
 
+aws s3 cp s3://tfstate-dd-kb-20230608200916573100000001/zarf-artifacts/zarf-config.toml /root/zarf-config.toml
+
+aws s3 cp s3://tfstate-dd-kb-20230608200916573100000001/zarf-artifacts/zarf-package-actions-runner-controller-full-amd64.tar.zst \
+    /root/zarf-package-actions-runner-controller-full-amd64.tar.zst
+
+cd /root
+
+zarf package deploy zarf-package-actions-runner-controller*.zst --confirm
+
 # aws s3 cp /etc/rancher/k3s/k3s.yaml s3://tfstate-dd-kb/kubeconfigfiles/
