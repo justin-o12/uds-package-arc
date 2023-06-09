@@ -14,8 +14,8 @@ Easy default deployment example of deploying an EC2 instance and automagically d
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.55.0 |
-| <a name="provider_cloudinit"></a> [cloudinit](#provider\_cloudinit) | 2.2.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.1.0 |
+| <a name="provider_cloudinit"></a> [cloudinit](#provider\_cloudinit) | 2.3.2 |
 
 ## Modules
 
