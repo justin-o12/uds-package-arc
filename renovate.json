@@ -1,0 +1,58 @@
+{
+    "enabled": true,
+    "forkProcessing": "enabled",
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+      "config:base"
+    ],
+    "rebaseStalePrs": true,
+    "dependencyDashboard": true,
+    "commitMessageSuffix": "[ci skip]",
+    "platform": "github",
+    "onboarding": false,
+    "dependencyDashboardTitle": "Renovate Dashboard 🤖",
+    "rebaseWhen": "conflicted",
+    "commitBodyTable": true,
+    "suppressNotifications": ["prIgnoreNotification"],
+    "regexManagers": [
+      {
+        "fileMatch": ["^zarf.yaml$"],
+        "matchStrings": [
+          "# renovate: datasource=docker( versioning=(?<versioning>.*?))?\n\\s*-\\s+(?<depName>[^:]+):(?<currentValue>.*)"
+        ],
+        "datasourceTemplate": "docker"
+      },
+      {
+        "fileMatch": ["^zarf.yaml$"],
+        "matchStrings": [
+          "url: oci://(?<depName>.*?)\n\\s*version: (?<currentValue>.*)\n"
+        ],
+        "datasourceTemplate": "docker"
+      }
+    ],
+    "packageRules": [
+      {
+        "datasources": ["docker"],
+        "commitMessageTopic": "Docker image {{depName}}",
+        "commitMessageExtra": "to {{#if isSingleVersion}}v{{{toVersion}}}{{else}}{{{newValue}}}{{/if}}",
+        "enabled": true,
+        "separateMinorPatch": true
+      },
+      {
+        "datasources": ["docker"],
+        "updateTypes": ["major"],
+        "labels": ["renovate/image-release", "dependency/major"]
+      },
+      {
+        "datasources": ["docker"],
+        "updateTypes": ["minor"],
+        "labels": ["renovate/image-release", "dependency/minor"]
+      },
+      {
+        "datasources": ["docker"],
+        "updateTypes": ["patch"],
+        "labels": ["renovate/image-release", "dependency/patch"]
+      }
+    ]
+  }
+  
