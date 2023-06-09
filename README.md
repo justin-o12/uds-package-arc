@@ -22,7 +22,7 @@ https://github.com/actions/actions-runner-controller/blob/master/docs/authentica
     * Record the installation ID (it is at the end of URL), this is the `GITHUB_APP_INSTALLATION_ID` Zarf variable
     * If desired, you may limit the installation's "Repository access" to "Only select repositories"
 5. **The URL of the org the application was installed on is `GITHUB_CONFIG_URL`**
-6. **Create a `zarf-config.toml` with the variable considered as desired:**
+6. **Create a `zarf-config.toml` with the variables configured as desired:**
    ```toml
    [package.deploy.set]
 
