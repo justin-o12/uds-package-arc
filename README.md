@@ -103,7 +103,7 @@ https://github.com/actions/actions-runner-controller/blob/master/docs/authentica
    ```
 7. **Install the actions-runner-controller Zarf package**
    ```bash
-   zarf package deploy oci://ghcr.io/defenseunicorns/packages/actions-runner-controller:0.0.1-amd64
+   zarf package deploy oci://ghcr.io/defenseunicorns/packages/actions-runner-controller:0.0.2-amd64
    ```
 
 ### Big Bang values needed to deploy
