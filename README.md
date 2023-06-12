@@ -105,3 +105,24 @@ https://github.com/actions/actions-runner-controller/blob/master/docs/authentica
    ```bash
    zarf package deploy oci://ghcr.io/defenseunicorns/packages/actions-runner-controller:0.0.1-amd64
    ```
+
+### Big Bang values needed to deploy
+```
+kyvernoPolicies:
+  values:
+    policies:
+      disallow-image-tags:
+        exclude:
+          any:
+          - resources:
+              namespaces:
+              - arc-runners
+              - arc-systems
+      restrict-image-registries:
+        exclude:
+          any:
+          - resources:
+              namespaces:
+              - arc-runners
+              - arc-systems
+```
