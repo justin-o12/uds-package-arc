@@ -95,11 +95,11 @@ https://github.com/actions/actions-runner-controller/blob/master/docs/authentica
    #github_runner_storage_size = 1Gi
    
    # Optional. The maximum number of runners to run concurrently.
-   #github_runner_max = 5
+   #github_max_runners = 5
    
    # Optional. The minimum number of runners to scale down to.
    # By default it will scale to zero.
-   #github_runner_min = 0
+   #github_min_runners = 0
    ```
 7. **Install the actions-runner-controller Zarf package**
    ```bash
