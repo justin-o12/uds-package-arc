@@ -105,3 +105,29 @@ https://github.com/actions/actions-runner-controller/blob/master/docs/authentica
    ```bash
    zarf package deploy oci://ghcr.io/defenseunicorns/packages/actions-runner-controller:0.0.1-amd64
    ```
+
+### Big Bang values needed to deploy
+
+If deploying onto a cluster with Big Bang including kyverno, the `restrict-image-registries` policy will reject non Iron Bank images and the `disallow-image-tags` policy will reject the `latest` tag used by `ghcr.io/actions/actions-runner:latest`.
+
+The following Big Bang values may be used to add an exception for the ARC namespaces:
+
+```
+kyvernoPolicies:
+  values:
+    policies:
+      disallow-image-tags:
+        exclude:
+          any:
+          - resources:
+              namespaces:
+              - arc-runners
+              - arc-systems
+      restrict-image-registries:
+        exclude:
+          any:
+          - resources:
+              namespaces:
+              - arc-runners
+              - arc-systems
+```
