@@ -105,32 +105,3 @@ https://github.com/actions/actions-runner-controller/blob/master/docs/authentica
    ```bash
    zarf package deploy oci://ghcr.io/defenseunicorns/packages/actions-runner-controller:0.0.1-amd64
    ```
-
-Useful debug commands:
-```bash
-# TODO: verify with scale sets:
-
-
-# actions controller logs, includes 401 error if PAT is bad
-# should show no errors
-kubectl logs -n arc-systems deployment/arc-actions-runner-controller -f
-
-# Inspect the runners:
-kubectl get RunnerDeployment,Runner,Pods -n arc-runners
-
-# If the Secret is updated, the actions-runner-controller is not automatically restarted
-# You need to restart it manually
-# This is arguably a bug in the actions-runner-controller helm chart
-kubectl rollout restart deployment -n arc-systems
-
-# Runner should appear as "idle" at:
-# https://github.com/defenseunicorns/kibbles-AND-bits/settings/actions/runners
-
-
-#debug ephemeral runner Pods:
-
-kubectl get pods -n arc-runners  -w -o 'custom-columns=NAME:.metadata.name,IMAGES:.spec.containers[*].image,VOLUMES:.spec.volumes[*].name,PHASE:.status.phase'
-
-kubectl get pods -n arc-runners -o yaml -w
-```
-
