@@ -20,10 +20,10 @@ variables:
     prompt: true
   - name: GITHUB_RUNNER_STORAGE_CLASS
     prompt: true
-  - name: GITHUB_MAX_RUNNERS
+  - name: GITHUB_RUNNER_MAX
     prompt: true
     default: "5"
-  - name: GITHUB_MIN_RUNNERS
+  - name: GITHUB_RUNNER_MIN
     prompt: true
     default: "0"
   - name: GITHUB_RUNNER_STORAGE_SIZE
