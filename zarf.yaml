@@ -12,7 +12,10 @@ variables:
   - name: GITHUB_APP_INSTALLATION_ID
     prompt: true
   - name: GITHUB_APP_PRIVATE_KEY
-    prompt: true
+    default: deploy-github-app-private-key.yaml
+    prompt: false
+    type: file
+    autoIndent: true
   - name: GITHUB_RUNNER_GROUP
     prompt: true
     default: "default"
