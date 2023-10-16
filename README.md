@@ -101,7 +101,7 @@ https://github.com/actions/actions-runner-controller/blob/master/docs/authentica
    
          # Optional. The minimum number of runners to scale down to.
          # By default it will scale to zero.
-         #github_runner_min = 0
+         #github_runner_min: 0
    ```
 
 7. **Install the actions-runner-controller Zarf package**
