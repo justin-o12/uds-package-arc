@@ -78,7 +78,7 @@ https://github.com/actions/actions-runner-controller/blob/master/docs/authentica
          github_app_installation_id: "456"
 
          # The file containing the private key of the GitHub App
-         github_app_private_key: deploy-github-app-private-key.yaml
+         github_app_private_key: deploy-github-app-private-key.pem
 
          # Optional. The name of the runner group to register the scale set in
          # You must first create the runner group in the GitHub UI manually before setting it here
