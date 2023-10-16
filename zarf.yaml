@@ -12,7 +12,6 @@ variables:
   - name: GITHUB_APP_INSTALLATION_ID
     prompt: true
   - name: GITHUB_APP_PRIVATE_KEY
-    default: deploy-github-app-private-key.pem
     prompt: false
     type: file
     autoIndent: true
