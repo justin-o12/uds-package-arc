@@ -97,7 +97,7 @@ https://github.com/actions/actions-runner-controller/blob/master/docs/authentica
          #github_runner_storage_size: "1Gi"
    
          # Optional. The maximum number of runners to run concurrently.
-         #github_runner_max = 5
+         #github_runner_max: 5
    
          # Optional. The minimum number of runners to scale down to.
          # By default it will scale to zero.
