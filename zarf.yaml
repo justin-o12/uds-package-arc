@@ -12,7 +12,9 @@ variables:
   - name: GITHUB_APP_INSTALLATION_ID
     prompt: true
   - name: GITHUB_APP_PRIVATE_KEY
-    prompt: true
+    prompt: false
+    type: file
+    autoIndent: true
   - name: GITHUB_RUNNER_GROUP
     prompt: true
     default: "default"

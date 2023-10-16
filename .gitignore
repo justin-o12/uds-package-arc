@@ -1,3 +1,4 @@
+*.pem
 *.tar.*
 zarf-config.toml
 zarf-sbom
