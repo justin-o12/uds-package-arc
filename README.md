@@ -90,7 +90,7 @@ https://github.com/actions/actions-runner-controller/blob/master/docs/authentica
    
          # The storage class name used for the Kubernetes ephemeral volume (temporary PVC/PV) used for the working directory of workflow execution.
          # If using k3s/k3d you can use the `local-path` storage class.
-         github_runner_storage_class = "local-path"
+         github_runner_storage_class: "local-path"
    
          # Optional. The size of the ephemeral volume
          # Note, local-path does not enforce storage limits.
