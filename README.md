@@ -82,11 +82,11 @@ https://github.com/actions/actions-runner-controller/blob/master/docs/authentica
 
          # Optional. The name of the runner group to register the scale set in
          # You must first create the runner group in the GitHub UI manually before setting it here
-         #github_runner_group="default"
+         #github_runner_group: "default"
     
          # The name of the runner scale set
          # This value is effectively a GitHub runs-on label for the runners. Note the runners will not have an "on-prem" label
-         github_runner_scaleset_name = "arc"
+         github_runner_scaleset_name: "arc"
    
          # The storage class name used for the Kubernetes ephemeral volume (temporary PVC/PV) used for the working directory of workflow execution.
          # If using k3s/k3d you can use the `local-path` storage class.
