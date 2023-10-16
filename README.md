@@ -94,7 +94,7 @@ https://github.com/actions/actions-runner-controller/blob/master/docs/authentica
    
          # Optional. The size of the ephemeral volume
          # Note, local-path does not enforce storage limits.
-         #github_runner_storage_size = 1Gi
+         #github_runner_storage_size: "1Gi"
    
          # Optional. The maximum number of runners to run concurrently.
          #github_runner_max = 5
