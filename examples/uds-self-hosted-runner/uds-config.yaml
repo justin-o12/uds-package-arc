@@ -1,9 +1,0 @@
-variables:
-  actions-runner-controller:
-    github_config_url: "https://github.com/have-fun-club"
-    github_app_id: "819698" #"821011"
-    github_app_installation_id: "47009305" #47046378
-    github_runner_scaleset_name: "arc"
-    github_app_private_key: have-fun-club-runner.2024-02-06.private-key.pem #have-fun-testing-runner.2024-02-07.private-key.pem
-    github_runner_storage_class: "local-path"
-    #github_runner_storage_size: "50Mi"
