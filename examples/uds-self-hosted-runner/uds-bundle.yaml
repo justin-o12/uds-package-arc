@@ -36,5 +36,5 @@ packages:
     ref: 0.9.1-registry1
 
   - name: actions-runner-controller
-    path: /home/justin/Code/kibbles-AND-bits
+    path: ../../
     ref: 0.1.0
