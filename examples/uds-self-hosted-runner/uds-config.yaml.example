@@ -1,8 +1,0 @@
-variables:
-  actions-runner-controller:
-    github_config_url: "https://github.com/my-org"
-    github_app_id: "123456"
-    github_app_installation_id: "12345678"
-    github_runner_scaleset_name: "arc"
-    github_app_private_key: my-org-runner.private-key.pem
-    github_runner_storage_class: "local-path"
