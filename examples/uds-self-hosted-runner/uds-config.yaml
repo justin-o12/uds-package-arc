@@ -1,4 +1,6 @@
 # Example UDS bundle config.  Update the values with your GitHub App values.
+# This works for local development, but you will likely want to get these from GitHub Actions secrets or something like
+# AWS Secrets Manager.
 variables:
   actions-runner-controller:
     github_config_url: "https://github.com/my-org"
