@@ -1,0 +1,5 @@
+tasks:
+  - name: arc-bundle
+    actions:
+      - description: Destroy ARC UDS bundle
+        cmd: uds remove examples/uds-self-hosted-runner/uds-bundle-uds-*.tar.zst --confirm --no-progress

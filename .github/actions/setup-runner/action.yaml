@@ -1,0 +1,14 @@
+name: Setup Runner
+description: Install necessary tools to run the tasks (mainly uds-cli).
+
+runs:
+  using: composite
+  steps:
+    - name: Install homebrew
+      uses: Homebrew/actions/setup-homebrew@master
+
+    - name: Install uds-cli via homebrew
+      shell: bash -e -o pipefail {0}
+      run: |
+        brew tap defenseunicorns/tap
+        brew install uds

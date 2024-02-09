@@ -16,7 +16,7 @@ The workflow Pods are run in the `arc-runners` Kubernetes namespace. This namesp
 
 ## When should actually you use self hosted runners?
 
-Public repos get completely free (infinite, within reason) hours of GitHub.com hosted Actions on public repos:
+Public repos get completely free (infinite, within reason) hours of GitHub.com hosted Actions on public repos:  
 https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration
 >GitHub Actions usage is free for standard GitHub-hosted runners in public repositories, and for self-hosted runners.
 

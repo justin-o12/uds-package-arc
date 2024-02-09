@@ -6,7 +6,7 @@ metadata:
   version: 0.0.1
 
 packages:
-  - name: uds-k3d-dev
+  - name: uds-k3d
     repository: ghcr.io/defenseunicorns/packages/uds-k3d
     # renovate: datasource=github-tags depName=defenseunicorns/uds-k3d versioning=semver
     ref: 0.3.1
@@ -31,7 +31,7 @@ packages:
     repository: oci://ghcr.io/defenseunicorns/packages/init
     ref: v0.32.1
 
-  - name: uds-core
+  - name: core
     repository: oci://ghcr.io/defenseunicorns/packages/uds/core
     ref: 0.9.1-registry1
 
