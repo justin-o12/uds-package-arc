@@ -21,7 +21,7 @@ jobs:
       - name: Install Zarf
         uses: defenseunicorns/setup-zarf@v1.0.0
         with:
-          version: v0.27.1
+          version: v0.32.3
 
       - name: Create the package
         run: zarf package create --confirm --set VERSION="${GITHUB_REF_NAME#v}"

@@ -1,0 +1,5 @@
+tasks:
+  - name: arc-bundle
+    actions:
+      - description: Deploy ARC UDS bundle
+        cmd: uds deploy examples/uds-self-hosted-runner/uds-bundle-uds-*.tar.zst --confirm --no-progress

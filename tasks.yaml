@@ -1,0 +1,17 @@
+includes:
+  - create: ./tasks/create.yaml
+  - deploy: ./tasks/deploy.yaml
+  - destroy: ./tasks/destroy.yaml
+
+tasks:
+  - name: create-bundle
+    actions:
+      - task: create:arc-bundle
+
+  - name: deploy-bundle
+    actions:
+      - task: deploy:arc-bundle
+
+  - name: destroy-bundle
+    actions:
+      - task: destroy:arc-bundle
