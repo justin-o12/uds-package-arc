@@ -22,4 +22,4 @@ tasks:
         cmd: |
           set -e
           uds zarf package publish build/zarf-package-core-amd64-${VERSION}.tar.zst ${TARGET_REPO}
-					uds zarf package publish build/zarf-package-core-arm64-${VERSION}.tar.zst ${TARGET_REPO}
+          uds zarf package publish build/zarf-package-core-arm64-${VERSION}.tar.zst ${TARGET_REPO}
