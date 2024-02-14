@@ -6,6 +6,7 @@ includes:
 tasks:
   - name: create-bundle
     actions:
+      - task: create:arc-package
       - task: create:arc-bundle
 
   - name: deploy-bundle
