@@ -2,7 +2,7 @@ tasks:
   - name: arc-package
     actions:
       - description: Create the ARC Zarf package
-        cmd: uds zarf package create --set VERSION=0.1.0 --confirm --no-progress
+        cmd: uds zarf package create --confirm --no-progress
 
   - name: arc-bundle
     actions:
