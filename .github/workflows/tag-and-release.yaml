@@ -40,6 +40,6 @@ jobs:
       - name: Publish UDS Zarf Package
         run: uds run -f tasks/publish.yaml package
 
-			- name: Save logs
+      - name: Save logs
         if: always()
         uses: ./.github/actions/save-logs
