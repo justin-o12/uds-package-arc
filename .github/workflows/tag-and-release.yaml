@@ -10,7 +10,7 @@ jobs:
     name: Tag New Version
     permissions: write-all
     runs-on: ubuntu-latest
-  	outputs:
+    outputs:
       release_created: ${{ steps.release-flag.outputs.release_created }}
     steps:
       - name: Create release tag
