@@ -10,7 +10,7 @@ jobs:
     name: Tag New Version
     permissions: write-all
     runs-on: ubuntu-latest
-  	outputs:
+    outputs:
       release_created: ${{ steps.release-flag.outputs.release_created }}
     steps:
       - name: Create release tag
@@ -40,6 +40,6 @@ jobs:
       - name: Publish UDS Zarf Package
         run: uds run -f tasks/publish.yaml package
 
-			- name: Save logs
+      - name: Save logs
         if: always()
         uses: ./.github/actions/save-logs
