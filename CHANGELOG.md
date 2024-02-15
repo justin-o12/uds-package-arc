@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/justin-o12/uds-package-arc/compare/v0.1.0...v0.2.0) (2024-02-15)
+
+
+### Features
+
+* forcing a release with a README update. ([c286666](https://github.com/justin-o12/uds-package-arc/commit/c2866663235adbcc32963bc02a7dc66c1152a5e8))
+
+
+### Bug Fixes
+
+* add new variable ([8a16212](https://github.com/justin-o12/uds-package-arc/commit/8a16212759354ccc8edb5d4989eaf6616383ecf6))
+* forcing a release with a README update. ([ff23800](https://github.com/justin-o12/uds-package-arc/commit/ff23800f0fe8cd1236e6603f2e3428617c5b3be0))
+
 ## [0.1.0](https://github.com/justin-o12/uds-package-arc/compare/v0.0.1...v0.1.0) (2024-02-15)
 
 
