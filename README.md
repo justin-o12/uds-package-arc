@@ -1,4 +1,4 @@
-# Kibbles and Bits
+# UDS Package Actions Runner Controller
 
 This Zarf package installs [actions-runner-controller](https://github.com/actions/actions-runner-controller) (ARC) and deploys a self hosted GitHub Actions runner.
 
