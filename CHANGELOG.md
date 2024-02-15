@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/justin-o12/uds-package-arc/compare/v0.2.0...v0.2.1) (2024-02-15)
+
+
+### Bug Fixes
+
+* removing hardcoded version for zarf package create ([0eff711](https://github.com/justin-o12/uds-package-arc/commit/0eff71130b4c778d8ba25a5f52b095ff228ead11))
+
 ## [0.2.0](https://github.com/justin-o12/uds-package-arc/compare/v0.1.0...v0.2.0) (2024-02-15)
 
 
