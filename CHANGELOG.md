@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2](https://github.com/justin-o12/uds-package-arc/compare/v0.2.1...v0.2.2) (2024-02-16)
+
+
+### Bug Fixes
+
+* Have release-please set the version in zarf.yaml. ([14d30ca](https://github.com/justin-o12/uds-package-arc/commit/14d30ca1ece191a0a9429e3b2832ef59cb3f2755))
+* Merge branch 'config-release-please' ([160bb3f](https://github.com/justin-o12/uds-package-arc/commit/160bb3f380d3a1fe90af1437b6ff50f0ca7e1485))
+
 ## [0.2.1](https://github.com/justin-o12/uds-package-arc/compare/v0.2.0...v0.2.1) (2024-02-15)
 
 
