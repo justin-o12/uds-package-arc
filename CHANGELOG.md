@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.4](https://github.com/justin-o12/uds-package-arc/compare/v0.2.3...v0.2.4) (2024-02-16)
+
+
+### Bug Fixes
+
+* remove build directory from publish step ([e6bf6f7](https://github.com/justin-o12/uds-package-arc/commit/e6bf6f7ebd80699dd5bdf25c4d416df806e21beb))
+
 ## [0.2.3](https://github.com/justin-o12/uds-package-arc/compare/v0.2.2...v0.2.3) (2024-02-16)
 
 
