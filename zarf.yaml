@@ -33,9 +33,6 @@ variables:
   - name: GITHUB_RUNNER_STORAGE_SIZE
     prompt: true
     default: "1Gi"
-  - name: FOO
-    prompt: true
-    default: "bar"
 
 components:
 - name: zarf-ignore-arc-runners-ns
