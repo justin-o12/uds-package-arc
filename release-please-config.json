@@ -12,7 +12,8 @@
       "versioning": "default",
       "extra-files": [
         "README.md",
-        "tasks/publish.yaml"
+        "tasks/publish.yaml",
+        "zarf.yaml"
       ]
     }
   }
